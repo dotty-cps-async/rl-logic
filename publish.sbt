@@ -1,28 +1,28 @@
 credentials += Credentials(Path.userHome / ".sbt" / "central_sonatype_credentials")
 
-ThisBuild / organization := "io.github.dotty-cps-async"
-ThisBuild / organizationName := "dotty-cps-async"
-ThisBuild / organizationHomepage := Some(url("https://github.com/dotty-cps-async"))
+organization := "io.github.dotty-cps-async"
+organizationName := "dotty-cps-async"
+organizationHomepage := Some(uri("https://github.com/dotty-cps-async"))
 
-ThisBuild / scmInfo := Some(
+scmInfo := Some(
        ScmInfo(
-          url("https://github.com/dotty-cps-async/rl-logic"),
+          uri("https://github.com/dotty-cps-async/rl-logic"),
           "scm:git@github.com:dotty-cps-async/rl-logic.git"
        )
 )
 
-ThisBuild / developers := List(
+developers := List(
           Developer(
              id    = "rssh",
              name  = "Ruslan Shevchenko",
              email = "ruslan@shevchenko.kiev.ua",
-             url   = url("https://github.com/rssh")
+             url   = uri("https://github.com/rssh")
           )
 )
 
-ThisBuild / description := "monad for reinforcement learning"
-ThisBuild / licenses := List("Apache 2" -> url("http://www.apache.org/licenses/LICENSE-2.0.txt"))
-ThisBuild / homepage := Some(url("https://github.com/dotty-cps-async/rl-logic"))
+description := "monad for reinforcement learning"
+licenses := List(License("Apache-2.0", uri("https://www.apache.org/licenses/LICENSE-2.0")))
+homepage := Some(uri("https://github.com/dotty-cps-async/rl-logic"))
 
-ThisBuild / pomIncludeRepository := { _ => false }
-ThisBuild / publishMavenStyle := true
+pomIncludeRepository := { _ => false }
+publishMavenStyle := true
