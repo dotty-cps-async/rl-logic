@@ -205,7 +205,7 @@ class TikTakToeTournamentMatchRunner(using scope: TensorScope[NDManager]) extend
 
   private def loadMLPAgent(descriptor: TikTakToeAgent, epsilon: Float): LoadedAgent = {
     given moveRepr: IntRepresentation[Move] = MoveIntRepresentation(descriptor.boardSize)
-    given gameStateRepr: BatchableTensorRepresentation[GameState, NDManager] { type Tensor = ai.djl.ndarray.NDArray } =
+    given gameStateRepr: (BatchableTensorRepresentation[GameState, NDManager] { type Tensor = ai.djl.ndarray.NDArray }) =
       GameStateTensorRepresentation(descriptor.boardSize)
 
     val modelParams = DJLRLModelParams(
@@ -231,7 +231,7 @@ class TikTakToeTournamentMatchRunner(using scope: TensorScope[NDManager]) extend
 
   private def loadCNNAgent(descriptor: TikTakToeAgent, epsilon: Float): LoadedAgent = {
     given moveRepr: IntRepresentation[Move] = MoveIntRepresentation(descriptor.boardSize)
-    given gameStateRepr: BatchableTensorRepresentation[GameState, NDManager] { type Tensor = ai.djl.ndarray.NDArray } =
+    given gameStateRepr: (BatchableTensorRepresentation[GameState, NDManager] { type Tensor = ai.djl.ndarray.NDArray }) =
       GameStateCNNTensorRepresentation(descriptor.boardSize)
 
     val modelParams = DJLRLModelParams(
@@ -355,7 +355,7 @@ object TikTakToeTournamentRunner {
     mode: MatchMode = MatchMode.Evaluate
   ): TournamentResult = {
     val device = SelfPlayTrainer.detectDevice()
-    given TensorPlatform { type Scope = NDManager } = DJL.withDevice(device)
+    given (TensorPlatform { type Scope = NDManager }) = DJL.withDevice(device)
 
     TensorScope.withGlobalScope[NDManager, TournamentResult] { rootScope =>
       given matchRunner: TournamentMatchRunner[TikTakToeAgent] = new TikTakToeTournamentMatchRunner()
@@ -415,7 +415,7 @@ object CrossTrainingRunner {
 
   def run(config: CrossTrainingConfig): CrossTrainingResult = {
     val device = SelfPlayTrainer.detectDevice()
-    given TensorPlatform { type Scope = NDManager } = DJL.withDevice(device)
+    given (TensorPlatform { type Scope = NDManager }) = DJL.withDevice(device)
 
     TensorScope.withGlobalScope[NDManager, CrossTrainingResult] { rootScope =>
       val trainer = new CrossTrainer(config)
@@ -613,7 +613,7 @@ private class CrossTrainer(config: CrossTrainingRunner.CrossTrainingConfig)(usin
     epsilon: Float
   ): (DJRLModelState[GameState, Move], DJLRLModelControl[TournamentLogicF, GameState, GameState, Move], DJRLModelState[GameState, Move] => Unit) = {
     given IntRepresentation[Move] = MoveIntRepresentation(descriptor.boardSize)
-    given BatchableTensorRepresentation[GameState, NDManager] { type Tensor = ai.djl.ndarray.NDArray } =
+    given (BatchableTensorRepresentation[GameState, NDManager] { type Tensor = ai.djl.ndarray.NDArray }) =
       GameStateTensorRepresentation(descriptor.boardSize)
 
     val modelParams = DJLRLModelParams(
@@ -643,7 +643,7 @@ private class CrossTrainer(config: CrossTrainingRunner.CrossTrainingConfig)(usin
     epsilon: Float
   ): (DJRLModelState[GameState, Move], DJLRLModelControl[TournamentLogicF, GameState, GameState, Move], DJRLModelState[GameState, Move] => Unit) = {
     given IntRepresentation[Move] = MoveIntRepresentation(descriptor.boardSize)
-    given BatchableTensorRepresentation[GameState, NDManager] { type Tensor = ai.djl.ndarray.NDArray } =
+    given (BatchableTensorRepresentation[GameState, NDManager] { type Tensor = ai.djl.ndarray.NDArray }) =
       GameStateCNNTensorRepresentation(descriptor.boardSize)
 
     val modelParams = DJLRLModelParams(

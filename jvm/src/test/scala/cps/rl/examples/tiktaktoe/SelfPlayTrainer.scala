@@ -59,7 +59,7 @@ class SelfPlayTrainer(config: SelfPlayConfig)(using TensorScope[NDManager]) {
   given moveRepr: IntRepresentation[Move] = MoveIntRepresentation(config.boardSize)
 
   // GameState tensor representation with batching support (relative encoding)
-  given gameStateRepr: BatchableTensorRepresentation[GameState, NDManager] { type Tensor = NDArray } =
+  given gameStateRepr: (BatchableTensorRepresentation[GameState, NDManager] { type Tensor = NDArray }) =
     GameStateTensorRepresentation(config.boardSize)
 
   // Model parameters
@@ -190,7 +190,7 @@ object SelfPlayTrainer {
 
   def run(config: SelfPlayConfig = SelfPlayConfig()): TrainingMetrics = {
     val device = detectDevice()
-    given TensorPlatform { type Scope = NDManager } = DJL.withDevice(device)
+    given (TensorPlatform { type Scope = NDManager }) = DJL.withDevice(device)
     TensorScope.withGlobalScope[NDManager, TrainingMetrics] { rootScope =>
       val trainer = new SelfPlayTrainer(config)
       trainer.train()

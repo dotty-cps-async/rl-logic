@@ -59,7 +59,7 @@ class LogicTreeTrainerBaseline(config: LogicTreeBaselineConfig)(using TensorScop
   val game = new TikTakToeGame(config.boardSize, config.winLength)
 
   given moveRepr: IntRepresentation[Move] = MoveIntRepresentation(config.boardSize)
-  given gameStateRepr: BatchableTensorRepresentation[GameState, NDManager] { type Tensor = NDArray } =
+  given gameStateRepr: (BatchableTensorRepresentation[GameState, NDManager] { type Tensor = NDArray }) =
     GameStateTensorRepresentation(config.boardSize)
 
   val modelParams = DJLRLModelParams(
@@ -303,7 +303,7 @@ object LogicTreeTrainerBaseline {
 
   def run(config: LogicTreeBaselineConfig = LogicTreeBaselineConfig()): TrainingMetrics = {
     val device = detectDevice()
-    given TensorPlatform { type Scope = NDManager } = DJL.withDevice(device)
+    given (TensorPlatform { type Scope = NDManager }) = DJL.withDevice(device)
     TensorScope.withGlobalScope[NDManager, TrainingMetrics] { rootScope =>
       val trainer = new LogicTreeTrainerBaseline(config)
       trainer.train()

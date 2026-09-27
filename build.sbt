@@ -1,10 +1,10 @@
 
 ThisBuild / version := "0.2.0-SNAPSHOT"
 ThisBuild / versionScheme := Some("semver-spec")
-ThisBuild / scalaVersion := "3.3.7"
+ThisBuild / scalaVersion := "3.9.0"
 ThisBuild / publishTo := localStaging.value
 
-val dottyCpsAsyncVersion = "1.3.1"
+val dottyCpsAsyncVersion = "1.4.0"
 
 lazy val root = project.in(file("."))
   .aggregate(rlLogic.jvm, rlLogic.js, rlLogic.native)

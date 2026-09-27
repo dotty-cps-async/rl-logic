@@ -84,7 +84,7 @@ class MiniMaxTrainerCNN(config: MiniMaxCNNConfig)(using TensorScope[NDManager]) 
   given moveRepr: IntRepresentation[Move] = MoveIntRepresentation(config.boardSize)
 
   // Use CNN-compatible tensor representation with shape (2, boardSize, boardSize)
-  given gameStateRepr: BatchableTensorRepresentation[GameState, NDManager] { type Tensor = ai.djl.ndarray.NDArray } =
+  given gameStateRepr: (BatchableTensorRepresentation[GameState, NDManager] { type Tensor = ai.djl.ndarray.NDArray }) =
     GameStateCNNTensorRepresentation(config.boardSize)
 
   // CNN model parameters
@@ -238,7 +238,7 @@ object MiniMaxTrainerCNN {
 
   def run(config: MiniMaxCNNConfig = MiniMaxCNNConfig()): TrainingMetrics = {
     val device = SelfPlayTrainer.detectDevice()
-    given TensorPlatform { type Scope = NDManager } = DJL.withDevice(device)
+    given (TensorPlatform { type Scope = NDManager }) = DJL.withDevice(device)
     TensorScope.withGlobalScope[NDManager, TrainingMetrics] { rootScope =>
       val trainer = new MiniMaxTrainerCNN(config)
       trainer.train()

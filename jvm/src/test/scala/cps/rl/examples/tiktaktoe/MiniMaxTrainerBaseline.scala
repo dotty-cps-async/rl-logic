@@ -84,7 +84,7 @@ class MiniMaxTrainerBaseline(config: MiniMaxBaselineConfig)(using TensorScope[ND
   val game = new TikTakToeGame(config.boardSize, config.winLength)
 
   given moveRepr: IntRepresentation[Move] = MoveIntRepresentation(config.boardSize)
-  given gameStateRepr: BatchableTensorRepresentation[GameState, NDManager] { type Tensor = ai.djl.ndarray.NDArray } =
+  given gameStateRepr: (BatchableTensorRepresentation[GameState, NDManager] { type Tensor = ai.djl.ndarray.NDArray }) =
     GameStateTensorRepresentation(config.boardSize)
 
   val modelParams = DJLRLModelParams(
@@ -245,7 +245,7 @@ object MiniMaxTrainerBaseline {
 
   def run(config: MiniMaxBaselineConfig = MiniMaxBaselineConfig()): TrainingMetrics = {
     val device = SelfPlayTrainer.detectDevice()
-    given TensorPlatform { type Scope = NDManager } = DJL.withDevice(device)
+    given (TensorPlatform { type Scope = NDManager }) = DJL.withDevice(device)
     TensorScope.withGlobalScope[NDManager, TrainingMetrics] { rootScope =>
       val trainer = new MiniMaxTrainerBaseline(config)
       trainer.train()
