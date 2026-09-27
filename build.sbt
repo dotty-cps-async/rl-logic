@@ -1,8 +1,8 @@
 
-ThisBuild / version := "0.2.0-SNAPSHOT"
-ThisBuild / versionScheme := Some("semver-spec")
-ThisBuild / scalaVersion := "3.9.0"
-ThisBuild / publishTo := localStaging.value
+version := "0.2.0-SNAPSHOT"
+versionScheme := Some("semver-spec")
+scalaVersion := "3.9.0"
+publishTo := localStaging.value
 
 val dottyCpsAsyncVersion = "1.4.0"
 
@@ -18,9 +18,9 @@ lazy val rlLogic = crossProject(JSPlatform, JVMPlatform, NativePlatform)
   .in(file("."))
   .settings(
     name := "rl-logic",
-    libraryDependencies += "io.github.dotty-cps-async" %%% "dotty-cps-async" % dottyCpsAsyncVersion,
-    libraryDependencies += "io.github.dotty-cps-async" %%% "dotty-cps-async-logic" % dottyCpsAsyncVersion,
-    libraryDependencies += "org.scalameta" %%% "munit" % "1.0.4" % Test,
+    libraryDependencies += "io.github.dotty-cps-async" %% "dotty-cps-async" % dottyCpsAsyncVersion,
+    libraryDependencies += "io.github.dotty-cps-async" %% "dotty-cps-async-logic" % dottyCpsAsyncVersion,
+    libraryDependencies += "org.scalameta" %% "munit" % "1.3.6" % Test,
   )
   .jvmSettings(
     libraryDependencies += "ai.djl" % "api" % "0.36.0",
@@ -28,7 +28,8 @@ lazy val rlLogic = crossProject(JSPlatform, JVMPlatform, NativePlatform)
     libraryDependencies += "ai.djl" % "model-zoo" % "0.36.0",
     libraryDependencies += "ai.djl.pytorch" % "pytorch-engine" % "0.36.0",
     // CUDA 12.4 enabled PyTorch native library for GPU support (requires CUDA toolkit)
-    libraryDependencies += "ai.djl.pytorch" % "pytorch-native-cu124" % "2.5.1" % Runtime classifier "linux-x86_64",
+    libraryDependencies += ("ai.djl.pytorch" % "pytorch-native-cu124" % "2.5.1" % Runtime)
+      .classifier("linux-x86_64"),
 
     libraryDependencies += "org.slf4j" % "slf4j-api" % "2.0.7",
     libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.5.18",
