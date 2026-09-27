@@ -67,7 +67,7 @@ class DJLRLModelControl[F[_] : CpsScoredLogicMonad.Curry[Float], S, O, A: IntRep
     // Use custom inputShape if provided (for CNN), otherwise default to (batchSize, observationSize)
     // For CNN, initialize with batch=1 to support dynamic batch sizes during inference
     val inputShape = params.inputShape match {
-      case Some(dims) => new Shape((1L +: dims.map(_.toLong)): _*)  // batch=1 for CNN
+      case Some(dims) => new Shape((1L +: dims.map(_.toLong))*)
       case None => new Shape(params.minBatchSize, params.observationSize)
     }
     trainer.initialize(inputShape)
@@ -97,10 +97,10 @@ class DJLRLModelControl[F[_] : CpsScoredLogicMonad.Curry[Float], S, O, A: IntRep
 
   override def rateActions(modelState: DJRLModelState[O, A], observation: O, validActions: IndexedSeq[A], mode: AgentRunningMode): F[A] = {
     val scored =
-      if (mode == Explore && params.random.nextFloat < params.epsilon) then
+      if (mode == Explore && params.random.nextFloat() < params.epsilon) then
         // Explore: random valid move
         validActions.zipWithIndex.map { (action, actionIndex) =>
-          val value = params.random.nextFloat
+          val value = params.random.nextFloat()
           (value, action)
         }
       else
@@ -254,4 +254,3 @@ object NDArrayTranslator extends ai.djl.translate.Translator[NDArray, NDArray] {
   override def processInput(ctx: ai.djl.translate.TranslatorContext, input: NDArray): NDList = new NDList(input)
   override def processOutput(ctx: ai.djl.translate.TranslatorContext, list: NDList): NDArray = list.singletonOrThrow()
 }
-

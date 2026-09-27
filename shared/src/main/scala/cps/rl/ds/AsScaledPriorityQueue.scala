@@ -34,7 +34,7 @@ object AsScaledPriorityQueue {
 
     def rOrdering: Ordering[R] = ord
 
-    given pairOrdering[A]: Ordering[(A, R)] = Ordering.by[(A, R), R](_._2)(ord)
+    given pairOrdering[A]: Ordering[(A, R)] = Ordering.by[(A, R), R](_._2)(using ord)
 
     given elementMeasure[A]: Measured[(A, R), R] with {
       def measure(pair: (A, R)): R = pair._2

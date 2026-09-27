@@ -1,5 +1,5 @@
 
-version := "0.2.0-SNAPSHOT"
+version := "0.2.0"
 versionScheme := Some("semver-spec")
 scalaVersion := "3.9.0"
 publishTo := localStaging.value

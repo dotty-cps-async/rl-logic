@@ -1,3 +1,4 @@
+addSbtPlugin("com.github.sbt" % "sbt-git" % "2.2.0")
 addSbtPlugin("com.github.sbt" % "sbt-pgp" % "2.3.2")
 addSbtPlugin("com.github.sbt" % "sbt-site" % "1.8.0")
 addSbtPlugin("com.github.sbt" % "sbt-ghpages" % "0.10.0")
